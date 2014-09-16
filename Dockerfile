@@ -8,18 +8,19 @@ FROM dockerfile/ubuntu
 MAINTAINER Ken Mugrage <kmugrage@thoughtworks.com>
 
 # My agents need Ruby
-RUN apt-get install -y ruby1.9.1
+RUN apt-get install -y ruby2.1.2
 RUN gem install rake
 
+# TOM Do I need this? Needed by Go agent?
 RUN apt-get update && apt-get install -y default-jre-headless
 
 # Modified to wget the agent from the download site. When a package repo
 # is available we can use that and always get the lastest
-RUN cd /tmp && wget -nc -nv http://download01.thoughtworks.com/go/14.1.0/ga/go-agent-14.1.0-18882.deb  
-RUN dpkg -i -E /tmp/go-agent-14.1.0-18882.deb
+RUN cd /tmp && wget -nc -nv http://download.go.cd/gocd-deb/go-agent-14.2.0-377.deb
+RUN dpkg -i -E /tmp/go-agent-14.2.0-377.deb
 
 # This file has my authorization string so that I don't have to approve new agents. 
-ADD autoregister.properties /var/lib/go-agent/config/autoregister.properties
+# ADD autoregister.properties /var/lib/go-agent/config/autoregister.properties
 
 # This file is also very specific to my installation. It tells the Go agent where the Go server
 # is on my internal network.
